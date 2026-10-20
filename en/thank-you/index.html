@@ -219,6 +219,7 @@ align-items:center;justify-content:center;padding-left:5px}
 .plb-vid-txt{font-weight:600;font-size:15px;padding:0 16px;text-align:center}
 .plb-vid-frame{width:100%;aspect-ratio:16/9;border:0;border-radius:14px;display:block}
 .plb-vid-note{font-size:13.5px;color:var(--plb-slate);margin-top:10px;text-align:center}
+.plb-native{width:100%;height:auto;aspect-ratio:16/9;border-radius:14px;background:#0B2545;display:block}
 
 .plb-faq .plb-qa{border-bottom:1px solid var(--plb-line);padding:18px 0;max-width:800px;margin:0 auto}
 .plb-faq h3{font-size:18px;color:var(--plb-navy);margin:0 0 7px}
@@ -344,6 +345,11 @@ font-family:inherit;background:#fff;color:var(--plb-ink)}
 <script>(function(){
   var CFG = {"lang": "en", "code": "EN", "worker": "https://goodwill-keap-followup.goodwill-lbt.workers.dev", "form": "plb", "thanks": "/polishlivingbenefits/en/thank-you/", "staging": true, "consent": "plb-consent-2026-10-19", "need": "Please enter your first name and a 10-digit phone number.", "err": "Something went wrong. Please call us at 630-785-2412.", "sending": "Sending…", "stagingNote": "Staging copy: this form does not send (only a first name starting with TEST).", "book": ""};
   function ev(n, p){ try{ if (window.gtag) gtag('event', n, p || {}); }catch(e){} }
+  document.querySelectorAll('video.plb-native').forEach(function(v){
+    var id = v.getAttribute('data-vid'), started = false;
+    v.addEventListener('play', function(){ if (!started) { started = true; ev('video_start', { video_id: id, page_lang: CFG.lang }); } });
+    v.addEventListener('ended', function(){ ev('video_complete', { video_id: id, page_lang: CFG.lang }); });
+  });
   // video facades: no third-party player loads until the visitor asks for it
   document.querySelectorAll('.plb-vid').forEach(function(b){
     b.addEventListener('click', function(){
